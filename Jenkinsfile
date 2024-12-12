@@ -1,13 +1,16 @@
 pipeline {
+    environment {
+        HOME = '.'
+    }
     agent {
         docker {
-            image 'node:lts'
-	        args '-u root'
+            image 'node:22.12.0-alpine'
         }
     }
     stages {
         stage('Lint') {
             steps {
+                sh 'whoami'
                 sh 'corepack enable'
                 sh 'corepack prepare pnpm@latest-9 --activate'
                 sh 'pnpm install'
