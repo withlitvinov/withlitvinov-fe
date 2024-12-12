@@ -1,6 +1,6 @@
 {
-  "name": "withlitvinov-fe-react",
-  "private": true,
+  "name": "withlitvinov-fe",
+  "private": false,
   "sideEffects": false,
   "type": "module",
   "scripts": {
