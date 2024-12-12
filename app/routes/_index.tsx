@@ -1,12 +1,15 @@
 import type { ReactElement } from 'react';
 import type { MetaFunction } from '@remix-run/node';
 import { SiLinkedin, SiGithub, SiTelegram } from '@icons-pack/react-simple-icons';
+import cn from 'classnames';
 
 export const meta: MetaFunction = () => {
   return [
     { title: 'Anatolii Litvinov' },
   ];
 };
+
+const SHOW_PROFILE_PHOTO = false;
 
 type Social = {
   key: string;
@@ -66,15 +69,27 @@ const Page = () => {
           id="about"
           className="space-y-[32px] sm:space-y-[24px]"
         >
-          <div className="flex flex-col items-center gap-[1.5rem] sm:flex-row sm:items-start">
-            <div className="relative h-[12rem] w-[12rem]">
-              <img
-                src={data.photoUrl}
-                alt="profile"
-                className="rounded-full"
-              />
-            </div>
-            <div className="flex flex-col items-center sm:items-start">
+          <div
+            className={
+              cn('flex flex-col items-center gap-[1.5rem]', {
+                'sm:flex-row sm:items-start': SHOW_PROFILE_PHOTO,
+              })
+            }
+          >
+            {SHOW_PROFILE_PHOTO && (
+              <div className="relative h-[12rem] w-[12rem]">
+                <img
+                  src={data.photoUrl}
+                  alt="profile"
+                  className="rounded-full"
+                />
+              </div>
+            )}
+            <div
+              className={cn('flex flex-col items-center', {
+                'sm:items-start': SHOW_PROFILE_PHOTO,
+              })}
+            >
               <h1 className="font-inter-tight text-[2rem] font-bold leading-[2.5rem]">
                 { data.name }
               </h1>
