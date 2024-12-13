@@ -1,20 +1,29 @@
 pipeline {
     agent {
-        dockerfile {
-            filename 'jenkins.Dockerfile'
-            additionalBuildArgs '--build-arg UID=$(id -u) --build-arg GID=$(id -g)'
+        docker {
+            image 'node:22.12.0'
+            args '-u root -w /home/root'
         }
     }
     stages {
-        stage('Lint') {
+        stage('setup-pnpm') {
+            steps {
+                sh 'corepack enable'
+                sh 'corepack prepare pnpm@latest-9 --activate'
+            }
+        }
+        stage('install-node-modules') {
             steps {
                 sh 'pnpm install'
+            }
+        }
+        stage('lint') {
+            steps {
                 sh 'pnpm lint'
             }
         }
-        stage('Build') {
+        stage('build') {
             steps {
-                sh 'pnpm install'
                 sh 'pnpm build'
             }
         }
