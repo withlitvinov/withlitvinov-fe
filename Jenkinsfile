@@ -5,6 +5,9 @@ pipeline {
             args '-u root -w /home/root'
         }
     }
+    environment {
+        image = ''
+    }
     stages {
         stage('setup-pnpm') {
             steps {
@@ -25,12 +28,21 @@ pipeline {
         stage('build') {
             steps {
                 sh 'pnpm build'
+                archiveArtifacts artifacts: 'build/**', fingerprint: true, onlyIfSuccessful: true
             }
         }
-    }
-    post {
-        success {
-            archiveArtifacts artifacts: 'build/**', fingerprint: true, onlyIfSuccessful: true
-        }
+//         stage('build-docker-image') {
+//             agent {
+//                 docker {
+//                     image 'docker:latest'
+//                     reuseNode true
+//                 }
+//             }
+//             steps {
+//                 script {
+//                     image = docker.build 'withlitvinov/www-withlitvinov-com'
+//                 }
+//             }
+//         }
     }
 }
